@@ -4,7 +4,7 @@ The **evidence-adaptive test (EA)** combines marginal and precision-adjusted evi
 
 The canonical model is
 
-$$ \boldsymbol X \sim N_d(\boldsymbol \mu ,\boldsymbol \Sigma),\qquad H_0:\boldsymbol \mu = \boldsymbol 0,\qquad H_1:\boldsymbol \mu \ne \boldsymbol 0,$$
+$$ \boldsymbol{X} \sim N_d(\boldsymbol \mu ,\boldsymbol \Sigma),\qquad H_0:\boldsymbol \mu = \boldsymbol 0,\qquad H_1:\boldsymbol \mu \ne \boldsymbol 0,$$
 
 with positive-definite covariance $\boldsymbol \Sigma$. The repository considers **known covariance** (Setting K) and **estimated covariance** (Setting W), in which an independent scatter matrix satisfies $\boldsymbol A\sim W_d(n,\boldsymbol \Sigma)$ with $n\ge d$.
 

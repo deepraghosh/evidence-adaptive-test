@@ -4,9 +4,9 @@ The **evidence-adaptive test (EA)** combines marginal and precision-adjusted evi
 
 The canonical model is
 
-$$ **X**\sim N_d(**\mu**,**\Sigma**),\qquad H_0:**\mu**=**0**,\qquad H_1:**\mu** \ne **0**,$$
+$$ \boldsymbol X \sim N_d(\boldsymbol \mu ,\boldsymbol \Sigma),\qquad H_0:\boldsymbol \mu = \boldsymbol 0,\qquad H_1:\boldsymbol \mu \ne \boldsymbol 0,$$
 
-with positive-definite covariance **$\Sigma$**. The repository considers **known covariance** (Setting K) and **estimated covariance** (Setting W), in which an independent scatter matrix satisfies $**A**\sim W_d(n,**\Sigma**)$ with $n\ge d$.
+with positive-definite covariance $\boldsymbol \Sigma$. The repository considers **known covariance** (Setting K) and **estimated covariance** (Setting W), in which an independent scatter matrix satisfies $\boldsymbol A\sim W_d(n,\boldsymbol \Sigma)$ with $n\ge d$.
 
 EA combines the marginal and adjusted two-sided p-values $P_j,Q_j$ at each coordinate through a local Simes rule, then applies a Bonferroni correction across coordinates:
 
@@ -14,7 +14,7 @@ $$S_j=\min\{2\min(P_j,Q_j),\max(P_j,Q_j)\},\qquad P_{\mathrm{EA}}=\min\{1,d\min_
 
 The analytic rule rejects when $P_{\mathrm{EA}}\le\alpha$. Under the stated Gaussian model and the appropriate known-covariance or independent-Wishart construction of the inputs, this rule controls the global Type I error in finite samples at level $\alpha$. The guarantee uses the model's dependence structure within each pair.
 
-The real-data examples test $H_0:**\mu_1** = **\mu_2**$ for two groups of protein profiles. Under independent Gaussian sampling with a common covariance, their scaled mean difference and pooled within-group scatter give the same canonical model.
+The real-data examples test $H_0: \boldsymbol \mu_1 = \boldsymbol \mu_2$ for two groups of protein profiles. Under independent Gaussian sampling with a common covariance, their scaled mean difference and pooled within-group scatter give the same canonical model.
 
 | Folder | Contents |
 |---|---|

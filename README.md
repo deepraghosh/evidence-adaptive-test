@@ -4,30 +4,30 @@ The **evidence-adaptive test (EA)** combines marginal and precision-adjusted evi
 
 The canonical model is
 
-$$X\sim N_d(\mu,\Sigma),\qquad H_0:\mu=0,\qquad H_1:\mu\ne0,$$
+$$ **X**\sim N_d(**\mu**,**\Sigma**),\qquad H_0:**\mu**=**0**,\qquad H_1:**\mu** \ne **0**,$$
 
-with positive-definite covariance $\Sigma$. The repository considers **known covariance** (Setting K) and **estimated covariance** (Setting W), in which an independent scatter matrix satisfies $A\sim W_d(n,\Sigma)$ with $n\ge d$.
+with positive-definite covariance **$\Sigma$**. The repository considers **known covariance** (Setting K) and **estimated covariance** (Setting W), in which an independent scatter matrix satisfies $**A**\sim W_d(n,**\Sigma**)$ with $n\ge d$.
 
 EA combines the marginal and adjusted two-sided p-values $P_j,Q_j$ at each coordinate through a local Simes rule, then applies a Bonferroni correction across coordinates:
 
-$$s_j=\min\{2\min(P_j,Q_j),\max(P_j,Q_j)\},\qquad P_{\mathrm{EA}}=\min\{1,d\min_j s_j\}.$$
+$$S_j=\min\{2\min(P_j,Q_j),\max(P_j,Q_j)\},\qquad P_{\mathrm{EA}}=\min\{1,d\min_j S_j\}.$$
 
-The analytic rule rejects when $P_{\mathrm{EA}}\le\alpha$. Under the stated Gaussian model and the appropriate known-covariance or independent-Wishart construction of the inputs, this rule controls the global Type I error in finite samples at level $\alpha$. The guarantee uses the model's dependence structure within each pair; it is not a claim about arbitrary pairs of p-values or arbitrary non-Gaussian data.
+The analytic rule rejects when $P_{\mathrm{EA}}\le\alpha$. Under the stated Gaussian model and the appropriate known-covariance or independent-Wishart construction of the inputs, this rule controls the global Type I error in finite samples at level $\alpha$. The guarantee uses the model's dependence structure within each pair.
 
-The real-data examples test $H_0:\mu_1=\mu_2$ for two groups of protein profiles. Under independent Gaussian sampling with a common covariance, their scaled mean difference and pooled within-group scatter give the same canonical model.
+The real-data examples test $H_0:**\mu_1** = **\mu_2**$ for two groups of protein profiles. Under independent Gaussian sampling with a common covariance, their scaled mean difference and pooled within-group scatter give the same canonical model.
 
 | Folder | Contents |
 |---|---|
 | [`simulations/`](simulations/README.md) | Reproducible simulation settings, table and figure instructions, analytic EA comparisons, and the paired two-stage bootstrap. |
 | [`real data analysis/`](real%20data%20analysis/README.md) | Frozen TCGA measurements, p-value calculations, reference verification, and model/calibration notes. |
 
-The main power comparisons use a common Monte Carlo null-rank calibration for all methods. This is distinct from EA's analytic finite-sample rule, which is evaluated separately in Table S7. The estimated-covariance simulation panel uses the true simulation covariance to generate its calibration bank. The real-data analyses instead report the analytic and asymptotic calibrations documented in their README.
+The main power comparisons use a common Monte Carlo null-rank calibration for all methods. This is distinct from EA's analytic finite-sample rule, which is evaluated separately in Table S7. The estimated-covariance simulation panel uses the true simulation covariance to generate its calibration bank. The real-data analyses report the analytic and asymptotic calibrations documented in their documentation.
 
 ## Start here
 
 Use R 4.1 or later; the reference calculations used R 4.5.1. RStudio is convenient for selecting individual run sections. Standard R is sufficient. Simulation acceleration through Rcpp and a C++ compiler is optional; the scripts never install packages automatically.
 
-- **Observed data:** from the repository root, run `Rscript "real data analysis/RUN_data_analysis.R"`. This reads the frozen TCGA data, computes p-values, and checks the 14 displayed values against the bundled references. It does not generate observations or reconstruct them from summary statistics.
+- **Observed data:** from the repository root, run `Rscript "real data analysis/RUN_data_analysis.R"`. This reads the frozen TCGA data, computes analytic $p$-values, and checks the 14 displayed values against the bundled references. 
 - **Simulation tables and figures:** open the [simulation reproduction guide](simulations/README.md). It maps every requested table and figure to its run sections, fixed settings, and saved outputs. Full runs use 19,999 calibration replicates and 10,000 evaluation replicates per covariance group.
 - **Bootstrap and analytic EA:** `simulations/EA_additional_analyses.R` contains the two-stage paired bootstrap and Table S7. Its A0–A3 sections can be run separately; sourcing the whole file runs all of them.
 
@@ -46,6 +46,7 @@ evidence-adaptive-test/
     ├── RUN_data_analysis.R
     ├── EA_unknown_covariance_realdata.R
     ├── EA_manuscript_simulations.R
+    ├── TCGA_DataHub_navigation_instructions.txt
     ├── data/
     └── [reference values, checksums, and source attribution]
 ```
@@ -54,12 +55,9 @@ The two copies of `EA_manuscript_simulations.R` are intentional: the data-analys
 
 ## Reproducibility
 
-Simulation seeds are fixed integers, not dates read from the clock. The five-variable and moving-average master seeds are 20261026 and 20261028; the two-stage bootstrap seed is 20261030. Full-precision outputs and RNG/configuration records are saved when the corresponding run sections execute. Large generated score banks, caches, and figure outputs are not included in this source repository.
+Simulation seeds are fixed integers. The five-variable and moving-average master seeds are 20261026 and 20261028; the two-stage bootstrap seed is 20261030. Full-precision outputs and RNG/configuration records are saved when the corresponding run sections execute. Large generated score banks, caches, and figure outputs are not included in this source repository.
 
 The existing seeded bootstrap record has 90 positive simultaneous lower bounds. Its smallest unrounded bound is 0.0188522653536516, so all bounds exceed 0.0188 (standard four-decimal rounding of the minimum gives 0.0189). The code recalculates this result rather than assuming it. See the reproduction guide for the comparison family and exact commands.
 
 The real-data folder includes frozen TCGA measurements with checksum verification and upstream attribution in [SOURCE_DATA.txt](real%20data%20analysis/SOURCE_DATA.txt). Data terms are recorded there separately from the analysis code.
 
-## Repository access
-
-This repository is initially private. The owner can make it public later through **Settings → General → Danger Zone → Change repository visibility → Change to public**, followed by GitHub's confirmation prompts. Making it public exposes the repository's files and history to everyone. See [GitHub's visibility instructions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility).

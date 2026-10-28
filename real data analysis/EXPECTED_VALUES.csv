@@ -1,0 +1,15 @@
+dataset,method,p_value_display,log10_p_value
+Colorectal,EA,2.305316e-9,-8.63726949853113
+Colorectal,Z-Max,2.331918e-10,-9.63228679232829
+Colorectal,Feng-COM (summaries),2.617105e-10,-9.58217888429694
+Colorectal,QCQ (two-sample adaptation),1.171617e-77,-76.93121427020698
+Colorectal,"ZWS-{2,6} (two-sample adaptation)",4.331106e-5597,-5596.36340117633154
+Colorectal,MinP (Bonferroni),1.152658e-9,-8.93829949419510
+Colorectal,Quadratic (Hotelling),9.606791e-2,-1.01742166944451
+STAD,EA,2.639255e-4,-3.578518611168751
+STAD,Z-Max,4.423743e-2,-1.354210130596265
+STAD,Feng-COM (summaries),2.837384e-1,-0.547081833231988
+STAD,QCQ (two-sample adaptation),4.097983e-1,-0.387429849998820
+STAD,"ZWS-{2,6} (two-sample adaptation)",3.106718e-1,-0.507698195191570
+STAD,MinP (Bonferroni),1.696508e-1,-0.770443970834825
+STAD,Quadratic (Hotelling),1.285650e-2,-1.890877277400232

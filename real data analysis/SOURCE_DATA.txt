@@ -1,0 +1,45 @@
+Frozen source data for the EA TCGA applications
+=============================================
+
+The four data files are unmodified copies of the local TCGA input files used
+for Table S9. Filename prefixes distinguish the two studies. Their MD5 checksums
+are recorded in INPUT_MD5.csv and verified by RUN_data_analysis.R. These frozen
+bytes, rather than a changing repository branch, define the reproducibility
+inputs. A specific upstream Git commit has not been established for these copies.
+
+Data attribution: The Cancer Genome Atlas (TCGA), PanCancer Atlas studies;
+distributed through cBioPortal's public DataHub.
+
+Colorectal study:
+https://github.com/cBioPortal/datahub/tree/master/public/coadread_tcga_pan_can_atlas_2018
+  Upstream data_rppa.txt -> bundled coadread_data_rppa.txt
+  Upstream data_clinical_patient.txt -> coadread_data_clinical_patient.txt
+
+Stomach adenocarcinoma study:
+https://github.com/cBioPortal/datahub/tree/master/public/stad_tcga_pan_can_atlas_2018
+  Upstream data_rppa.txt -> bundled stad_data_rppa.txt
+  Upstream data_clinical_patient.txt -> stad_data_clinical_patient.txt
+
+The repository's data attribution and licensing notice is available at:
+https://github.com/cBioPortal/datahub#license
+https://raw.githubusercontent.com/cBioPortal/datahub/master/README.md
+The repository identifies the ODC Open Database License (ODbL) 1.0 and also
+provides a TCGA/Broad Institute GDAC notice. This bundled database subset is
+shared with its upstream attribution and under the upstream database terms;
+the analysis code makes no ownership claim over the TCGA measurements.
+ODbL terms: https://opendatacommons.org/licenses/odbl/1-0/
+Study notices:
+https://github.com/cBioPortal/datahub/blob/master/public/coadread_tcga_pan_can_atlas_2018/LICENSE
+https://github.com/cBioPortal/datahub/blob/master/public/stad_tcga_pan_can_atlas_2018/LICENSE
+
+Reference publications for study background
+------------------------------------------
+The Cancer Genome Atlas Network (2012). Comprehensive molecular characterization
+of human colon and rectal cancer. Nature 487, 330--337.
+The Cancer Genome Atlas Research Network (2014). Comprehensive molecular
+characterization of gastric adenocarcinoma. Nature 513, 202--209.
+Liu et al. (2018). Comparative molecular analysis of gastrointestinal
+adenocarcinomas. Cancer Cell 33, 721--735.e8.
+
+No live download is performed by the analysis code. Repository links are for
+provenance and optional inspection; internet access is not needed to rerun.

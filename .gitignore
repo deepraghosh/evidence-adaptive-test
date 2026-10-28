@@ -1,0 +1,15 @@
+.DS_Store
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.o
+*.so
+*.dll
+simulations/*_results/
+simulations/figures/
+simulations/manuscript_results/
+simulations/*.pdf
+simulations/Rplots.pdf
+real data analysis/TCGA_p_values.csv
+simulations/manuscript_tables/

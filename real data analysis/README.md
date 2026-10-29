@@ -1,16 +1,16 @@
 # Real data analysis
 
-This folder reproduces the TCGA protein-profile comparisons from the original patient-level observations. Run `RUN_data_analysis.R` to calculate the p-values for the colorectal and stomach-cancer examples and compare them with the included reference results.
+This folder reproduces the TCGA protein-profile comparisons from the original patient-level observations. The data originate from [NCI’s TCGA program](https://www.cancer.gov/ccg/research/genome-sequencing/tcga). Run `RUN_data_analysis.R` to calculate the $p$-values for the colorectal and stomach-cancer examples and compare them with the included reference results.
 
 The analysis tests equality of two population mean vectors,
 
 $$H_0:\boldsymbol\mu_1=\boldsymbol\mu_2,$$
 
-against a difference in at least one coordinate. These are global tests: a small p-value indicates evidence of a difference somewhere in the protein profiles; it does not identify the individual proteins responsible.
+against a difference in at least one coordinate. These are global tests: a small $p$-value indicates evidence of a difference somewhere in the protein profiles; it does not identify the individual proteins responsible.
 
 ## Requirements and files
 
-Only standard R is required; R 4.1 or later is recommended. RStudio is optional. The four frozen input files are included, so the analysis runs offline and does not download data or install packages.
+Only standard R is required. The four frozen input files are included, so the analysis runs offline and does not download data or install packages.
 
 | File | Purpose |
 |---|---|

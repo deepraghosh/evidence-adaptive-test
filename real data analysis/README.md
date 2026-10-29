@@ -15,10 +15,10 @@ Only standard R is required. The four frozen input files are included, so the an
 | File | Purpose |
 |---|---|
 | [`RUN_data_analysis.R`](RUN_data_analysis.R) | Driver for loading, analysis, combined results, and reference verification. |
-| [`EA_unknown_covariance_realdata.R`](EA_unknown_covariance_realdata.R) | Data readers, group definitions, two-sample summaries, and p-value calculations. |
+| [`EA_unknown_covariance_realdata.R`](EA_unknown_covariance_realdata.R) | Data readers, group definitions, two-sample summaries, and $p$-value calculations. |
 | [`EA_manuscript_simulations.R`](EA_manuscript_simulations.R) | Shared score and precision-estimation helpers, loaded as a function library. |
 | [`data/`](data/) | The four frozen RPPA and clinical annotation files. |
-| [`EXPECTED_VALUES.csv`](EXPECTED_VALUES.csv) | Previously calculated p-values and logarithms, used only for verification. |
+| [`EXPECTED_VALUES.csv`](EXPECTED_VALUES.csv) | Previously calculated $p$-values and logarithms, used only for verification. |
 | [`INPUT_MD5.csv`](INPUT_MD5.csv) | Checksums of the four input files, checked automatically by the driver. |
 | [`SOURCE_DATA.txt`](SOURCE_DATA.txt) | Data attribution, upstream links, and redistribution terms. |
 | [`REFERENCE_SESSION.txt`](REFERENCE_SESSION.txt) | Reference R version and platform. |
@@ -61,7 +61,7 @@ View(colorectal_result$table)
 View(stad_result$table)
 ```
 
-`comparison_table` contains the seven displayed methods for both datasets, their p-values, and the calibration descriptions. `verification` compares the calculated base-10 logarithms with `EXPECTED_VALUES.csv`, using a tolerance of `1e-6` to allow small numerical differences between platforms. The reference values do not enter the p-value calculation or determine significance; matching them verifies reproducibility of the implemented calculations.
+`comparison_table` contains the seven displayed methods for both datasets, their $p$-values, and the calibration descriptions. `verification` compares the calculated base-10 logarithms with `EXPECTED_VALUES.csv`, using a tolerance of `1e-6` to allow small numerical differences between platforms. The reference values do not enter the $p$-value calculation or determine significance; matching them verifies reproducibility of the implemented calculations.
 
 The driver prints results and retains them in R memory. It does not automatically save result files. To save the combined table explicitly:
 
@@ -99,7 +99,7 @@ EA, Z-Max, Feng-COM, MinP, and Quadratic use this scaled mean difference and wit
 | Method | Calibration used in this data analysis |
 |---|---|
 | EA | Analytic finite-sample Gaussian–Wishart calibration under the common-covariance model. |
-| MinP | Bonferroni combination of marginal Student p-values under that model. |
+| MinP | Bonferroni combination of marginal Student $p$-values under that model. |
 | Quadratic | Exact Gaussian-model F calibration. |
 | Z-Max | Asymptotic Gumbel approximation, with conditions on dependence and precision estimation. |
 | Feng-COM | Retained summary-based statistic with asymptotic calibration. |

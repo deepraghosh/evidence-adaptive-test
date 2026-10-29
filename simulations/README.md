@@ -13,7 +13,7 @@ The model is `X ~ N_d(mu, Sigma)` and an independent `A ~ Wishart_d(n, Sigma)`, 
 | `EA_explore_settings.R` | Editable correlation, dimension and amplitude sweeps | Runs six custom sweeps and displays twelve plots |
 | `EA_additional_analyses.R` | Two-stage bootstrap and analytic EA Table S7 | Runs A0–A3, including score-generating simulations and the bootstrap |
 
-Use a recent R version; the recorded runs used R 4.5.1. Base R is sufficient. With `backend = "auto"`, an installed Rcpp package and working C++ compiler can accelerate the same calculations; the code falls back to base R when acceleration is unavailable. The scripts do not install packages. `workers = 1L` is the portable reproduction setting used throughout this guide. Larger runs can take substantial time, especially without acceleration.
+Base R is sufficient. With `backend = "auto"`, an installed Rcpp package and working C++ compiler can accelerate the same calculations; the code falls back to base R when acceleration is unavailable. The scripts do not install packages. `workers = 1L` is the portable reproduction setting used throughout this guide. Larger runs can take substantial time, especially without acceleration.
 
 In RStudio, open a script in this folder and choose **Session → Set Working Directory → To Source File Location**. Keep all four scripts together. Run the following setup before the code examples in this guide:
 
@@ -36,18 +36,20 @@ Use `EA_explore_settings.R` to explore changed input values; its defaults are de
 
 | Manuscript item | Calculation | Main result location |
 |---|---|---|
-| Table 2 | Five-variable correlated module, both covariance panels | `five_variable_results/` |
-| Table 3 | Moving-average noise, both covariance panels | `moving_average_results/` |
-| Tables 4 and 5 | Sixteen confirmation alternatives, known and estimated covariance | `confirmation_verification_results/` |
+| Table 2 and 3 | Sixteen confirmation alternatives, known and estimated covariance | `confirmation_verification_results/` |
+| Table 4 | Five-variable correlated module, both covariance panels | `five_variable_results/` |
+| Tables 5 | Moving-average noise, both covariance panels | `moving_average_results/` |
 | Figure 1 | Six main matched-pair curve panels | `figures/01_...png` through `06_...png` |
 | Figure S1 | Six original sparse-design curve panels | `figures/07_...png` through `12_...png` |
-| Table S2 | Wilson null rejection intervals for 21 groups | `manuscript_tables/table_S2_...csv` |
+| Table S1 and S2 | Wilson null rejection intervals for 21 groups, both covariance | `manuscript_tables/table_S2_...csv`, `table_S3.csv` |
 | Tables S4 and S5 | Fourteen original sparse alternatives, known and estimated covariance | `manuscript_tables/table_S4.csv`, `table_S5.csv` |
 | Table S6 | Null rejection estimates for the two additional designs | `type1_results/type1_error_table.csv` and `.tex` |
 | Table S7 | Analytic EA and the strongest calibrated baseline | `additional_analysis_results/table_S7/` |
 | Ninety simultaneous bounds | Two-stage paired bootstrap of calibrated EA minus each baseline | `additional_analysis_results/bootstrap/` |
 
 ## Tables 2–5 and S6: run the main driver
+
+All paths below are relative to the repository root. Run the commands from that folder after completing the engine setup above.
 
 Run the complete driver once:
 
@@ -58,7 +60,13 @@ confirmation_result <- result
 
 Alternatively, select its sections separately in RStudio. The confirmation section produces `result`; the later sections produce `five_variable_result`, `moving_average_result` and `type1_table`. The later designs have separate output directories and do not overwrite the confirmation summaries. If running a design section alone in a new session, run the engine setup above first.
 
-### Table 2: five-variable correlated module
+### Tables 2 and 3: sixteen confirmation alternatives
+
+The CONFIRMATION section calls `run_manuscript(which = "confirmation", budget = "full", B = 19999L, R = 10000L, workers = 1L, backend = "auto", resume = TRUE, ...)`. It produces 16 alternatives across 12 calibration/evaluation groups: nine matched-pair alternatives M1–M9, four complementary alternatives B1–B4 and three controls C1–C3.
+
+The full results are in `confirmation_verification_results/power.csv`; `power_wide.csv` places methods in columns. Non-null known-covariance rows supply **Table 2** and non-null estimated-covariance rows supply **Table 3**. The value `"unknown"` in the code identifies the estimated-covariance panel. The export instructions below put them in manuscript order and attach the M/B/C labels.
+
+### Table 4: five-variable correlated module
 
 The FIVE-VARIABLE section uses `d = 50`, `n = 499`, covariance `diag(R_5(0.75), I_45)`, and mean `a * (1, 0.5, 0.5, 0.5, 0.5, 0, ..., 0)` for `a = 3, 3.5, 4`. The registered master seed is `20261026`, giving calibration/evaluation seeds `20271026` and `20271027`.
 
@@ -68,9 +76,9 @@ The call is to `run_new_cluster()`. This wrapper always makes a fresh run and ha
 - `five_variable_results/five_variable_estimated_covariance.csv`
 - Full-precision `power.csv`, `power_wide.csv`, `settings.csv` and `five_variable_result.rds`.
 
-The first two CSVs provide the two panels of Table 2, with three decimal places. Missing estimated-covariance IHC is `NA`, not zero power.
+The first two CSVs provide the two panels of **Table 4**, with three decimal places. Missing estimated-covariance IHC is `NA`, not zero power.
 
-### Table 3: moving-average noise
+### Table 5: moving-average noise
 
 The MOVING-AVERAGE section uses `d = 50`, `n = 499`, covariance with diagonal 1, adjacent entries `20/41`, and all other entries zero. Its mean has `mu[26] = a`, `mu[25] = mu[27] = a/3`, and zero elsewhere, for `a = 3, 3.5, 4`. The registered master seed is `20261028`, giving calibration/evaluation seeds `20271028` and `20271029`.
 
@@ -80,19 +88,13 @@ The driver calls `run_moving_average()` with `resume = FALSE` for a fresh seeded
 - `moving_average_results/moving_average_estimated_covariance.csv`
 - Full-precision `power.csv`, `power_wide.csv`, `settings.csv` and `moving_average_result.rds`.
 
-The first two CSVs provide Table 3's two panels, with three decimal places. The engine uses a covariance square root to generate the stated moving-average distribution; replacing its generation algorithm with a different but distributionally equivalent one would change the observations produced by a fixed seed.
-
-### Tables 4 and 5: sixteen confirmation alternatives
-
-The CONFIRMATION section calls `run_manuscript(which = "confirmation", budget = "full", B = 19999L, R = 10000L, workers = 1L, backend = "auto", resume = TRUE, ...)`. It produces 16 alternatives across 12 calibration/evaluation groups: nine matched-pair alternatives M1–M9, four complementary alternatives B1–B4 and three controls C1–C3.
-
-The full results are in `confirmation_verification_results/power.csv`; `power_wide.csv` places methods in columns. Non-null known-covariance rows supply Table 4 and non-null unknown-covariance rows supply Table 5. The export instructions below put them in manuscript order and attach the M/B/C labels.
+The first two CSVs provide the two panels of **Table 5**, with three decimal places. The engine uses a covariance square root to generate the stated moving-average distribution; replacing its generation algorithm with a different but distributionally equivalent one would change the observations produced by a fixed seed.
 
 ### Table S6: the two additional null rejection estimates
 
 Run the final TYPE I ERROR section after completing the five-variable and moving-average sections. It extracts `scenario == "null"` from their results; it does not simulate again. In a restarted session, the section can read the two saved result RDS files after the engine setup.
 
-It writes `type1_results/type1_error_table.csv` and `type1_error_table.tex`. The table contains known- and estimated-covariance panels for both designs, with four decimal places. Each estimate is the number of null rejections divided by 10,000. The amplitudes share a single null evaluation within each design; there are not three independent null rates per design.
+It writes `type1_results/type1_error_table.csv` and `type1_results/type1_error_table.tex`. The table contains known- and estimated-covariance panels for both designs. Each estimate is the number of null rejections divided by 10,000. The amplitudes share a single null evaluation within each design; there are not three independent null rates per design.
 
 ## Fixed curve and original-design runs
 
@@ -133,7 +135,7 @@ original_result <- read_result_summaries("original_results")
 
 These summaries suffice for the exports and plots below. The two-stage bootstrap additionally needs individual scores, which A1 saves separately.
 
-## Export Tables 4/5 and S4/S5 in manuscript order
+## Export Tables 2 and 3, and Tables S4 and S5, in manuscript order
 
 Run this helper and the two mapping blocks after obtaining `confirmation_result` and `original_result` above. It writes formatted four-decimal CSVs; full-precision summaries remain in the corresponding result folders.
 
@@ -183,10 +185,12 @@ confirmation_map <- data.frame(
     "coherent", "isolated", "isolated"
   )
 )
-table_4 <- export_power_table(confirmation_result, confirmation_map, "known",
-                              "manuscript_tables/table_4.csv")
-table_5 <- export_power_table(confirmation_result, confirmation_map, "unknown",
-                              "manuscript_tables/table_5.csv")
+# Table 2: sixteen confirmation alternatives, known covariance.
+table_2 <- export_power_table(confirmation_result, confirmation_map, "known",
+                              "manuscript_tables/table_2.csv")
+# Table 3: the same sixteen alternatives, estimated covariance.
+table_3 <- export_power_table(confirmation_result, confirmation_map, "unknown",
+                              "manuscript_tables/table_3.csv")
 
 original_map <- data.frame(
   Setting = paste0("O", 1:14),
@@ -201,15 +205,15 @@ table_S4 <- export_power_table(original_result, original_map, "known",
 table_S5 <- export_power_table(original_result, original_map, "unknown",
                                "manuscript_tables/table_S5.csv")
 if (interactive()) {
-  View(table_4); View(table_5); View(table_S4); View(table_S5)
+  View(table_2); View(table_3); View(table_S4); View(table_S5)
 }
 ```
 
 O1–O5 vary correlation at `d = 50`, `n = 249` and leading mean 2. O6–O9 vary leading mean at correlation 0.9, with O5 also serving as the amplitude-2 point. O10–O14 vary dimension from 50 to 250 with `n = 3*d - 1`; the active mean vector has leading value 3 and nine entries equal to 0.5. The dimension study changes both dimension and Wishart degrees of freedom. There are 14 distinct alternatives but 15 plotted points because O5 is shared by two sweeps.
 
-## Table S2: null rejection intervals for 21 groups
+## Tables S1 and S2: null rejection intervals for 21 groups
 
-This table combines the **12 confirmation null groups** and **nine main-curve null groups**. It reports pointwise 95% Wilson intervals conditional on the realized calibration banks. These are different from simultaneous bootstrap intervals for power differences.
+These tables combine the **12 confirmation null groups** and **nine main-curve null groups**. **Table S1** reports known-covariance intervals, and **Table S2** reports estimated-covariance intervals for the same 21 groups. Both report pointwise 95% Wilson intervals conditional on the realized calibration banks. These are different from simultaneous bootstrap intervals for power differences.
 
 Run after the confirmation and curve runs. The following code writes a long numeric CSV and two formatted panel CSVs in manuscript order:
 
@@ -237,7 +241,8 @@ null_intervals$Setting <- null_map$Setting[match(null_intervals$group, null_map$
 null_intervals <- null_intervals[order(match(null_intervals$group, null_map$group),
                                       null_intervals$panel, null_intervals$method), ]
 dir.create("manuscript_tables", showWarnings = FALSE)
-write.csv(null_intervals, "manuscript_tables/table_S2_null_intervals.csv", row.names = FALSE)
+write.csv(null_intervals, "manuscript_tables/tables_S1_S2_null_intervals.csv",
+          row.names = FALSE)
 
 for (panel in c("known", "unknown")) {
   methods <- method_columns
@@ -252,11 +257,20 @@ for (panel in c("known", "unknown")) {
       sprintf("[%.3f, %.3f]", z$low, z$high)
     }, character(1))
   }
-  write.csv(display, paste0("manuscript_tables/table_S2_", panel, ".csv"), row.names = FALSE)
+  table_id <- if (panel == "known") "S1" else "S2"
+  write.csv(display,
+            paste0("manuscript_tables/table_", table_id, "_", panel, ".csv"),
+            row.names = FALSE)
 }
 ```
 
-M5/M6/M7 share a null group; B1/B2 share another and B3/B4 share another. F1–F5 correspond to correlations 0.50, 0.70, 0.80, 0.90 and 0.95; F6–F9 correspond to dimensions 20, 100, 150 and 200. F5 also provides the dimension-50 point and the amplitude sweep. The full long table contains 357 rows: 21 groups times nine known-covariance methods plus eight estimated-covariance methods.
+M5/M6/M7 share a null group; B1/B2 share another and B3/B4 share another. F1–F5 correspond to correlations 0.50, 0.70, 0.80, 0.90 and 0.95; F6–F9 correspond to dimensions 20, 100, 150 and 200. F5 also provides the dimension-50 point and the amplitude sweep. The full long table contains 357 rows: 21 groups times (nine known-covariance methods plus eight estimated-covariance methods).
+
+The exports from this section are:
+
+- `manuscript_tables/table_S1_known.csv`: Table S1.
+- `manuscript_tables/table_S2_unknown.csv`: Table S2.
+- `manuscript_tables/tables_S1_S2_null_intervals.csv`: both tables in long numeric form, retaining rejection counts and interval endpoints.
 
 ## Figure 1 and Figure S1: twelve individual panels
 
@@ -287,7 +301,7 @@ if (interactive()) plot_manuscript_figure(1, figure_result)
 | 11 | Figure S1 | Estimated | Dimension |
 | 12 | Figure S1 | Estimated | Amplitude |
 
-Each PNG has a descriptive filename, for example `01_main_known_rho.png` or `12_original_estimated_amplitude.png`. Supporting plotted-data CSVs, style CSVs and caption text are also written. The whiskers are pointwise 95% Wilson intervals conditional on the calibration bank. Lines connect the five sampled settings; they are not fitted power functions.
+Each PNG has a descriptive filename, for example `01_main_known_rho.png`. Supporting plotted-data CSVs, style CSVs and caption text are also written. The whiskers are pointwise 95% Wilson intervals conditional on the calibration bank. Lines connect the five sampled settings; they are not fitted power functions.
 
 The main correlation sweep is `0.5, 0.7, 0.8, 0.9, 0.95`, at `d = 50`, `n = 249` and `a = 3.5`. Its dimension sweep is `20, 50, 100, 150, 200`, with `n = 5*d - 1`, correlation 0.95 and `a = 3.5`. Its amplitude sweep is `2.5, 3, 3.5, 4, 4.5`, at `d = 50`, `n = 249` and correlation 0.95. The original sweeps use the O1–O14 settings described above.
 
@@ -358,7 +372,7 @@ The exploratory main-correlation vector is `0.5, 0.6, 0.7, 0.8, 0.9`, and custom
 
 ## Seeds, saved results and reproducibility
 
-The date-like seeds are fixed integers; they do not change with the calendar. The additional design master seeds are `20261026` and `20261028`, and the bootstrap seed is `20261030`. Fixed original, confirmation and curve settings have their own registered master seeds and indices. Calibration uses `master_seed + 10000 * index`; evaluation uses the next integer. The engine sets the R RNG kinds to Mersenne-Twister, Inversion and Rejection. The bootstrap restores the caller's RNG state on completion.
+The additional design master seeds are `20261026` and `20261028`, and the bootstrap seed is `20261030`. Fixed original, confirmation and curve settings have their own registered master seeds and indices. Calibration uses `master_seed + 10000 * index`; evaluation uses the next integer. The engine sets the R RNG kinds to Mersenne-Twister, Inversion and Rejection. The bootstrap restores the caller's RNG state on completion.
 
 Use `settings_table(manuscript_settings("all"))` to inspect fixed-setting seeds. Result RDS objects also record simulation configuration and RNG states. The bootstrap saves its seed and RNG states in its own RDS object. File checks and recorded settings support reproducibility; no saved target values influence the test statistics or estimated powers.
 

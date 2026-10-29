@@ -1,0 +1,57 @@
+Accessing the colorectal TCGA dataset through NCI and cBioPortal
+==============================================================
+
+1. Open NCI's TCGA description:
+   https://www.cancer.gov/ccg/research/genome-sequencing/tcga
+
+2. Under "Learn more about TCGA," click "TCGA Computational Tools."
+   Direct link:
+   https://www.cancer.gov/ccg/research/genome-sequencing/tcga/using-tcga-data/tools
+
+3. On that page, click "cBioPortal for Cancer Genomics."
+   NCI lists it as a resource for visualization, analysis, and download of
+   cancer genomics data and identifies Memorial Sloan Kettering Cancer Center.
+   Direct link:
+   https://www.cbioportal.org/
+
+4. Open cBioPortal's official FAQ:
+   https://docs.cbioportal.org/user-guide/faq/
+
+   Find the question "How can I download the PanCancer Atlas data?"
+   Click its "DataHub" link, which opens:
+   https://github.com/cBioPortal/datahub/tree/master/public
+
+5. Select the folder "coadread_tcga_pan_can_atlas_2018":
+   https://github.com/cBioPortal/datahub/tree/master/public/coadread_tcga_pan_can_atlas_2018
+
+Relevant files in the colorectal study folder
+--------------------------------------------
+
+data_rppa.txt
+    Protein measurements obtained using reverse-phase protein arrays (RPPA).
+
+data_clinical_patient.txt
+    Patient information, including the subtype annotations used to select
+    chromosomal-instability (CIN) and genome-stable (GS) colon cancers.
+
+meta_study.txt
+    Study identification, publication references, and links to the original
+    data source.
+    https://github.com/cBioPortal/datahub/blob/master/public/coadread_tcga_pan_can_atlas_2018/meta_study.txt
+
+Provenance and reproduction notes
+--------------------------------
+
+This route connects NCI's TCGA documentation to cBioPortal and its official
+DataHub, then to the colorectal study folder used as the source of our data.
+The repository contains the input data; our EA analysis uses separate R code.
+These links document provenance and institutional connections, not a statement
+of corporate ownership of the underlying TCGA data.
+
+The repository's master branch can change. For exact numerical reproduction,
+retain the frozen input files used in the analysis and record their filenames,
+download date, checksums, and repository commit identifier when available.
+
+The NCI-to-cBioPortal link and the FAQ-to-DataHub link were checked directly.
+The FAQ URL is supplied above so it can be opened directly after reaching
+cBioPortal; no particular homepage menu location for the FAQ is assumed.

@@ -1,9 +1,9 @@
 # Simulations and manuscript reproduction
 
-The model is `X ~ N_d(mu, Sigma)` and an independent
-`A ~ Wishart_d(n, Sigma)`, with null hypothesis `mu = 0`. Here `n` is the
+The model is $`X \sim N_d(\mu, \Sigma)`$ and an independent
+$`A \sim Wishart_d(n, \Sigma)`$, with null hypothesis $`\mu = 0`$. Here $`n`$ is the
 Wishart degrees of freedom, and the signal vectors specify the mean of
-`X`. Setting K uses the known covariance in its scores. Setting W uses
+$`X`$. Setting K uses the known covariance in its scores. Setting W uses
 the scatter matrix and quantities fitted from it.
 
 ## Files and execution order

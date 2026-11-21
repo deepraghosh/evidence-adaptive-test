@@ -34,14 +34,27 @@ be skipped by loading the saved results.
 
 ## Conditional calibration and budgets
 
-For each observed $(X,A)$, the code fixes $A^*=A+XX^\top$. It draws
-independent $Z_b\sim N_d(0,I_d)$ and $V_b\sim\chi^2_{n-d+1}$, and forms
-$X_b^0=(A^*)^{1/2}Z_b/\sqrt{Z_b^\top Z_b+V_b}$ and
-$A_b^0=A^*-X_b^0(X_b^0)^\top$. The conditional reference distribution
-does not need the true covariance. All methods share the observed
-dataset and its reference draws within a replicate. Estimated quantities
-are refit on each reference draw. Larger scores give stronger evidence,
-so the rank p-value is `(1 + sum(T_ref >= T_obs))/(B + 1)`.
+For each observed $`(X,A)`$, the code fixes $`A^{\ast}=A+XX^\top`$.
+It draws independent $`Z_b\sim N_d(0,I_d)`$ and
+$`V_b\sim\chi^2_{n-d+1}`$, and forms
+
+```math
+\begin{aligned}
+X_b^0 &= \frac{(A^{\ast})^{1/2}Z_b}{\sqrt{Z_b^\top Z_b+V_b}}, \\
+A_b^0 &= A^{\ast}-X_b^0(X_b^0)^\top.
+\end{aligned}
+```
+
+The conditional reference distribution does not need the true covariance.
+All methods share the observed dataset and its reference draws within a
+replicate. Estimated quantities are refit on each reference draw. Larger
+scores give stronger evidence. With observed score $`T_{\mathrm{obs}}`$
+and reference scores $`T_b^0`$, the rank p-value is
+
+```math
+p_{\mathrm{MC}} =
+\frac{1+\sum_{b=1}^{B}\mathbf{1}\{T_b^0\ge T_{\mathrm{obs}}\}}{B+1}.
+```
 
 All results use nominal level `.05`. The conditional table runs use
 `R = 1000` outer replicates per setting and `B = 99` conditional draws

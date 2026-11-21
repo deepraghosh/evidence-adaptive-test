@@ -18,18 +18,18 @@ The real-data examples test $H_0: \boldsymbol \mu_1 = \boldsymbol \mu_2$ for two
 
 | Folder | Contents |
 |---|---|
-| [`simulations/`](simulations/README.md) | Reproducible simulation settings, table and figure instructions, analytic EA comparisons, and the paired two-stage bootstrap. |
+| [`simulations/`](simulations/README.md) | Conditional Monte Carlo simulations, analytic EA comparisons, and instructions for reproducing tables and figures. |
 | [`real data analysis/`](real%20data%20analysis/README.md) | Frozen TCGA measurements, p-value calculations, reference verification, and model/calibration notes. |
 
-The main power comparisons use a common Monte Carlo null-rank calibration for all methods. This is distinct from EA's analytic finite-sample rule, which is evaluated separately in Table S7. The estimated-covariance simulation panel uses the true simulation covariance to generate its calibration bank. The real-data analyses report the analytic and asymptotic calibrations documented in their documentation.
+For each simulated dataset, the code generates a fresh set of null reference draws conditional on the observed augmented scatter matrix. All methods share these reference draws within the replicate, and estimated quantities are refitted on each draw. The reference sampler requires only the observed pair and the Wishart degrees of freedom. In Setting K, the test scores can use the known covariance. The real-data analyses use the analytic and asymptotic calibrations described in the real-data guide.
 
 ## Start here
 
 RStudio is convenient for selecting individual run sections. Standard R is sufficient. Simulation acceleration through Rcpp and a C++ compiler is optional; the scripts never install packages automatically.
 
 - **Observed data:** from the repository root, run `Rscript "real data analysis/RUN_data_analysis.R"`. This reads the frozen TCGA data, computes analytic $p$-values, and checks the 14 displayed values against the bundled references. 
-- **Simulation tables and figures:** open the [simulation reproduction guide](simulations/README.md). It maps every requested table and figure to its run sections, fixed settings, and saved outputs. Full runs use 19,999 calibration replicates and 10,000 evaluation replicates per covariance group.
-- **Bootstrap and analytic EA:** `simulations/EA_additional_analyses.R` contains the two-stage paired bootstrap and Table S7. Its A0–A3 sections can be run separately; sourcing the whole file runs all of them.
+- **Simulation tables and figures.** From the repository root, run `source("simulations/EA_run.R")` in R. The [simulation guide](simulations/README.md) and its [plain-text copy](simulations/README.txt) show how to load the saved outputs or rerun each design.
+- **Analytic EA comparisons.** Table S7 compares analytic EA with conditionally calibrated tests on the same simulated datasets used for Tables 4 and 5. The script `simulations/EA_component_benchmarks.R` generates the component comparisons in Tables S8 and S9.
 
 ```text
 evidence-adaptive-test/
@@ -37,27 +37,27 @@ evidence-adaptive-test/
 ├── simulations/
 │   ├── README.md
 │   ├── README.txt
-│   ├── EA_manuscript_simulations.R
-│   ├── EA_explore_settings.R
-│   ├── EA_additional_analyses.R
-│   └── Run_confirmation.R
+│   ├── EA_run.R
+│   ├── EA_methods.R
+│   ├── EA_simulations.R
+│   ├── EA_fast.cpp
+│   ├── EA_component_benchmarks.R
+│   └── results/
 └── real data analysis/
     ├── README.md
     ├── RUN_data_analysis.R
     ├── EA_unknown_covariance_realdata.R
     ├── EA_manuscript_simulations.R
-    ├── TCGA_DataHub_navigation_instructions.txt
+    ├── TCGA_Datahub_navigation_instructions.txt
     ├── data/
     └── [reference values, checksums, and source attribution]
 ```
 
-The two copies of `EA_manuscript_simulations.R` are intentional: the data-analysis folder retains its frozen shared library, while the simulation folder includes the additional design functions. Keep each driver with the library beside it.
-
 ## Reproducibility
 
-Simulation seeds are fixed integers. The five-variable and moving-average master seeds are 20261026 and 20261028; the two-stage bootstrap seed is 20261030. Full-precision outputs and RNG/configuration records are saved when the corresponding run sections execute. Large generated score banks, caches, and figure outputs are not included in this source repository.
+The conditional runs use master seed `20261118` and `B = 99` reference draws per observed dataset. The table runs use `R = 1000` evaluation replicates per setting, and the figure runs use `R = 200`. The analytic component study uses seed `20261119` and `R = 1000`. All studies use level `.05`.
 
-The existing seeded bootstrap record has 90 positive simultaneous lower bounds. Its smallest unrounded bound is 0.0188522653536516, so all bounds exceed 0.0188 (standard four-decimal rounding of the minimum gives 0.0189). The code recalculates this result rather than assuming it. See the reproduction guide for the comparison family and exact commands.
+The `simulations/results/` folder contains the saved simulation results and the PDFs for Figures 1 and S1. The conditional-run results record the simulation settings and random-number streams.
 
 The real-data folder includes frozen TCGA measurements with checksum verification and upstream attribution in [SOURCE_DATA.txt](real%20data%20analysis/SOURCE_DATA.txt). Data terms are recorded there separately from the analysis code.
 

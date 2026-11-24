@@ -2,7 +2,7 @@ Frozen source data for the EA TCGA applications
 =============================================
 
 The four data files are unmodified copies of the local TCGA input files used
-for Table S9. Filename prefixes distinguish the two studies. Their MD5 checksums
+for Table 6. Filename prefixes distinguish the two studies. Their MD5 checksums
 are recorded in INPUT_MD5.csv and verified by RUN_data_analysis.R. These frozen
 bytes, rather than a changing repository branch, define the reproducibility
 inputs. A specific upstream Git commit has not been established for these copies.

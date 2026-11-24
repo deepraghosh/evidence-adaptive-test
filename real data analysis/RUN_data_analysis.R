@@ -1,4 +1,4 @@
-# Reproduce the current Table S9 from the original TCGA observations.
+# Reproduce the current Table 6 from the original TCGA observations.
 # Base R only. No internet, package installation, reconstruction, permutations,
 # workers, or automatic result/figure saving. Run sections separately if desired.
 # RStudio: open this file, choose Session > Set Working Directory > To Source
